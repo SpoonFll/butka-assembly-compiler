@@ -12,6 +12,9 @@ fn main() {
         process::exit(0x0100);
     }
     let mut outPath: String = String::new();
+    /**
+     * if no argument specified output as a.out
+     */
     match args.get(2) {
         None => outPath = "a.out".to_string(),
         _ => outPath = args.get(2).unwrap().deref().to_string(),
@@ -21,6 +24,10 @@ fn main() {
     let binary = compile(processedContents);
     writeBinary(binary, outPath);
 }
+/**
+ * write the bin array from compile()
+ * to the specified or default path
+ */
 fn writeBinary(bin: [u16; 32], path: String) {
     let mut file = fs::File::create(path);
     let mut binArray: [u8; 64] = [0; 64];
@@ -32,6 +39,10 @@ fn writeBinary(bin: [u16; 32], path: String) {
     }
     file.unwrap().write_all(&binArray.as_slice());
 }
+/**
+ * give a string parsed from file to here to translate to a
+ * register value thankyou lex for pointing this out
+ */
 fn loadRegister(element: &String) -> u16 {
     let mut reg: u16 = 0;
     match element.as_str().to_uppercase().deref() {
@@ -58,6 +69,10 @@ fn loadRegister(element: &String) -> u16 {
     }
     reg
 }
+/**
+ * traverse the now structured data to become a
+ * binary array that can be outputed to a file
+ */
 fn compile(buf: Vec<Vec<String>>) -> [u16; 32] {
     let mut bin: [u16; 32] = [0; 32];
     let mut labels: HashMap<String, u16> = HashMap::new();
@@ -162,6 +177,10 @@ fn compile(buf: Vec<Vec<String>>) -> [u16; 32] {
     bin
 }
 
+/**
+ * convert string file to a structure of instructions to
+ * be sent to compile()
+ */
 fn processFile(buf: String) -> Vec<Vec<String>> {
     let mut retValue: Vec<Vec<String>> = Vec::new();
 
@@ -176,6 +195,9 @@ fn processFile(buf: String) -> Vec<Vec<String>> {
     retValue
 }
 
+/**
+ * from the args for the file specified to get a string buffer
+ */
 fn getContents(args: Vec<String>) -> String {
     let contents = fs::read_to_string(args.get(1).unwrap()).expect("could not open file");
     contents
