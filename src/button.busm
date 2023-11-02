@@ -1,0 +1,17 @@
+start:
+in R1 4
+out R1 0
+jz r1 start
+in r2 0
+out r2 0
+loopOne:
+in r3 5
+jz r3 loopOne
+ldi r4 1
+loopTwo:
+sub r2 r4
+out r2 1
+jz r2 end
+j loopTwo
+end:
+j end
