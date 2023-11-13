@@ -81,7 +81,7 @@ fn compile(buf: Vec<Vec<String>>) -> [u16; 32] {
     let mut add: u16 = 0;
     for line in buf.iter() {
         let instruction = line.get(0).unwrap();
-
+        add = 1;
         if instruction.chars().last().unwrap() == ':' {
             let chopped = &instruction[0..instruction.len() - 1].to_string();
             labels.insert(chopped.clone(), j);
@@ -95,6 +95,7 @@ fn compile(buf: Vec<Vec<String>>) -> [u16; 32] {
         j += add;
     }
     for line in buf.iter() {
+        add = 1;
         let instruction = line.get(0).unwrap();
         if instruction == "NOP" || instruction == "nop" {
             bin[i as usize] = 0x0000;
